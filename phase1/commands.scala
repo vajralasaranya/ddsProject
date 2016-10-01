@@ -36,27 +36,41 @@ import org.datasyslab.geospark.spatialOperator.RangeQuery;
 import org.datasyslab.geospark.spatialRDD.PointRDD;
 import com.vividsolutions.jts.geom.Envelope;
 
-// 1st question
-val queryEnvelope=new Envelope (-113.79,-109.73,32.99,35.08); 
+// 2a question
+val queryEnvelope=new Envelope (-113.79,-109.73,32.99,35.08);
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
-val resultSize = RangeQuery.SpatialRangeQuery(objectRDD, queryEnvelope, 0).getRawPointRDD().count();
+val resultSize = RangeQuery.SpatialRangeQuery(objectRDD, queryEnvelope1, 0).getRawPointRDD().count();
 
-// 2nd question
-val queryEnvelope=new Envelope (-113.79,-109.73,32.99,35.08); 
+// 2b question
+val queryEnvelope=new Envelope (-113.79,-109.73,32.99,35.08);
 val objectRDD1 = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
 objectRDD1.buildIndex("rtree");
-val resultSize = RangeQuery.SpatialRangeQuery(objectRDD1, queryEnvelope, 0).getRawPointRDD().count();
+val resultSize = RangeQuery.SpatialRangeQueryUsingIndex(objectRDD1, queryEnvelope, 0).getRawPointRDD().count();
 
-//3rd question
+//3a question
 val fact=new GeometryFactory();
 val queryPoint=fact.createPoint(new Coordinate(-113.79, 35.08));
 var result=KNNQuery.SpatialKnnQuery(objectRDD, queryPoint, 5);
 
-//4th question
+//3b question
 val fact=new GeometryFactory();
 val queryPoint=fact.createPoint(new Coordinate(-113.79, 35.08));
 var result=KNNQuery.SpatialKnnQueryUsingIndex(objectRDD1, queryPoint, 5);
 
 
-//5th question
-val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,",");
+//4a question
+val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",11);
+val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",11); 
+val resultSize = joinQuery.SpatialJoinQuery(objectRDD,objectRDD3).count();
+
+//4b question
+val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",11);
+val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",11);
+objectRDD.buildIndex("rtree");
+val resultSize = joinQuery.SpatialJoinQueryUsingIndex(objectRDD,objectRDD3).count();
+
+
+//4c question
+val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","rtree",11);
+val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","rtree",11);
+val resultSize = joinQuery.SpatialJoinQuery(objectRDD,objectRDD3).count();
