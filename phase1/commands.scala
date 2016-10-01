@@ -39,7 +39,7 @@ import com.vividsolutions.jts.geom.Envelope;
 // 2a question
 val queryEnvelope=new Envelope (-113.79,-109.73,32.99,35.08);
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
-val resultSize = RangeQuery.SpatialRangeQuery(objectRDD, queryEnvelope1, 0).getRawPointRDD().count();
+val resultSize = RangeQuery.SpatialRangeQuery(objectRDD, queryEnvelope, 0).getRawPointRDD().count();
 
 // 2b question
 val queryEnvelope=new Envelope (-113.79,-109.73,32.99,35.08);
@@ -61,16 +61,19 @@ var result=KNNQuery.SpatialKnnQueryUsingIndex(objectRDD1, queryPoint, 5);
 //4a question
 val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",11);
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",11); 
+val joinQuery = new JoinQuery(sc,objectRDD,objectRDD3);
 val resultSize = joinQuery.SpatialJoinQuery(objectRDD,objectRDD3).count();
 
 //4b question
 val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",11);
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",11);
 objectRDD.buildIndex("rtree");
+val joinQuery = new JoinQuery(sc,objectRDD,objectRDD3);
 val resultSize = joinQuery.SpatialJoinQueryUsingIndex(objectRDD,objectRDD3).count();
 
 
 //4c question
-val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","rtree",11);
+val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv");
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","rtree",11);
+val joinQuery = new JoinQuery(sc,objectRDD,objectRDD3);
 val resultSize = joinQuery.SpatialJoinQuery(objectRDD,objectRDD3).count();
