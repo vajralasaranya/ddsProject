@@ -36,6 +36,9 @@ import org.datasyslab.geospark.spatialOperator.RangeQuery;
 import org.datasyslab.geospark.spatialRDD.PointRDD;
 import com.vividsolutions.jts.geom.Envelope;
 
+//question 1 
+val newPointRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
+
 // 2a question
 val queryEnvelope=new Envelope (-113.79,-109.73,32.99,35.08);
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
