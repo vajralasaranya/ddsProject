@@ -40,22 +40,31 @@ import com.vividsolutions.jts.geom.Envelope;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
-
+import java.io.PrintWriter;
 
 var timeSleep = 1;
 
 var forloopmin = 0;
 var forloopmax = 1;
 
+
 //question 1 
 TimeUnit.SECONDS.sleep(timeSleep);
 val now = Calendar.getInstance().getTime();
 print("question1 starting:"+now+"\n");
+
+val out=new PrintWriter("out1.txt");
+out.println("question1 starting:"+now);
+
 for( a<- forloopmin to  forloopmax ) {
 val newPointRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
 }
+
 val now = Calendar.getInstance().getTime()
 print("question1 ending:"+now+"\n")
+out.println("question1 ending:"+now+"\n")
+out.flush();
+out.close();
 
 // 2a question
 TimeUnit.SECONDS.sleep(timeSleep);
@@ -150,3 +159,4 @@ val resultSize = joinQuery.SpatialJoinQuery(objectRDD,objectRDD3).count();
 }
 val now = Calendar.getInstance().getTime()
 print("question4c ending:"+now)
+
