@@ -41,90 +41,112 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+
+var timeSleep = 1;
+
+var forloopmin = 0;
+var forloopmax = 1;
+
 //question 1 
-TimeUnit.SECONDS.sleep(60);
-val now = Calendar.getInstance().getTime()
-print("question1 starting:"+now)
+TimeUnit.SECONDS.sleep(timeSleep);
+val now = Calendar.getInstance().getTime();
+print("question1 starting:"+now+"\n");
+for( a<- forloopmin to  forloopmax ) {
 val newPointRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
+}
 val now = Calendar.getInstance().getTime()
-print("question1 ending:"+now)
+print("question1 ending:"+now+"\n")
 
 // 2a question
-TimeUnit.SECONDS.sleep(60);
+TimeUnit.SECONDS.sleep(timeSleep);
 val now = Calendar.getInstance().getTime()
 print("question2a starting:"+now)
+for( a<- forloopmin to  forloopmax ) {
 val queryEnvelope=new Envelope (-113.79,-109.73,32.99,35.08);
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
 val resultSize = RangeQuery.SpatialRangeQuery(objectRDD, queryEnvelope, 0).getRawPointRDD().count();
+}
 val now = Calendar.getInstance().getTime()
 print("question2a ending:"+now)
 
 // 2b question
-TimeUnit.SECONDS.sleep(60);
+TimeUnit.SECONDS.sleep(timeSleep);
 val now = Calendar.getInstance().getTime()
 print("question2b starting:"+now)
+for( a<- forloopmin to  forloopmax ) {
 val queryEnvelope=new Envelope (-113.79,-109.73,32.99,35.08);
 val objectRDD1 = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
 objectRDD1.buildIndex("rtree");
 val resultSize = RangeQuery.SpatialRangeQueryUsingIndex(objectRDD1, queryEnvelope, 0).getRawPointRDD().count();
+}
 val now = Calendar.getInstance().getTime()
 print("question2b ending:"+now)
 
 //3a question
-TimeUnit.SECONDS.sleep(60);
+TimeUnit.SECONDS.sleep(timeSleep);
 val now = Calendar.getInstance().getTime()
 print("question3a starting:"+now)
+for( a<- forloopmin to  forloopmax ) {
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv");
 
 val fact=new GeometryFactory();
 val queryPoint=fact.createPoint(new Coordinate(-113.79, 35.08));
 var result=KNNQuery.SpatialKnnQuery(objectRDD, queryPoint, 5);
+}
 val now = Calendar.getInstance().getTime()
 print("question3a ending:"+now)
 
 //3b question
-TimeUnit.SECONDS.sleep(60);
+TimeUnit.SECONDS.sleep(timeSleep);
 val now = Calendar.getInstance().getTime()
 print("question3b starting:"+now)
+for( a<- forloopmin to  forloopmax ) {
 val objectRDD1 = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
 objectRDD1.buildIndex("rtree");
 
 val fact=new GeometryFactory();
 val queryPoint=fact.createPoint(new Coordinate(-113.79, 35.08));
 var result=KNNQuery.SpatialKnnQueryUsingIndex(objectRDD1, queryPoint, 5);
+}
 val now = Calendar.getInstance().getTime()
 print("question3b ending:"+now)
 
 //4a question
-TimeUnit.SECONDS.sleep(60);
+TimeUnit.SECONDS.sleep(timeSleep);
 val now = Calendar.getInstance().getTime()
 print("question4a starting:"+now)
+for( a<- forloopmin to  forloopmax ) {
 val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",11);
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",11); 
 val joinQuery = new JoinQuery(sc,objectRDD,objectRDD3);
 val resultSize = joinQuery.SpatialJoinQuery(objectRDD,objectRDD3).count();
+}
 val now = Calendar.getInstance().getTime()
 print("question4a ending:"+now)
 
 //4b question
-TimeUnit.SECONDS.sleep(60);
+TimeUnit.SECONDS.sleep(timeSleep);
 val now = Calendar.getInstance().getTime()
 print("question4b starting:"+now)
+for( a<- forloopmin to  forloopmax ) {
 val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",11);
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",11);
 objectRDD.buildIndex("rtree");
 val joinQuery = new JoinQuery(sc,objectRDD,objectRDD3);
 val resultSize = joinQuery.SpatialJoinQueryUsingIndex(objectRDD,objectRDD3).count();
+}
 val now = Calendar.getInstance().getTime()
 print("question4b ending:"+now)
 
 //4c question
-TimeUnit.SECONDS.sleep(60);
+TimeUnit.SECONDS.sleep(timeSleep);
 val now = Calendar.getInstance().getTime()
 print("question4c starting:"+now)
+for( a<- forloopmin to  forloopmax ) {
 val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv");
 val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","rtree",11);
 val joinQuery = new JoinQuery(sc,objectRDD,objectRDD3);
 val resultSize = joinQuery.SpatialJoinQuery(objectRDD,objectRDD3).count();
+}
 val now = Calendar.getInstance().getTime()
 print("question4c ending:"+now)
