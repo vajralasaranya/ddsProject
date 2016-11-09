@@ -42,6 +42,8 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 import java.io.PrintWriter;
 
+
+
 var timeSleep = 180;
 
 var forloopmin = 0;
@@ -212,3 +214,17 @@ print("question4c ending:"+now)
 out.println("question4c ending:"+now+"\n")
 out.flush();
 out.close();
+
+
+// cartesian product 
+val now = Calendar.getInstance().getTime()
+print("questiontask starting:"+now)
+for( a<- forloopmin to  1 ) {
+println(a);
+val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid", 10); /* The O means spatial attribute starts at Column 0 and the 10 means 10 RDD partitions */
+val rectangleRDD = new RectangleRDD(sc, "hdfs://rajesh:54310/home/dataset/zcta510.csv", 0, "csv","equalgrid",10); /* The O means spatial attribute starts at Column 0. You might need to "collect" all rectangles into a list and do the Carteian Product join. */
+val joinQuery = new JoinQuery(sc,objectRDD,rectangleRDD);
+val resultSize = joinQuery.SpatialJoinQueryUsingCartesianProduct(objectRDD, rectangleRDD).count();
+}
+val now = Calendar.getInstance().getTime()
+print("questiontask ending:"+now)

@@ -1,0 +1,3 @@
+question3b starting:Tue Nov 08 16:30:44 MST 2016
+question3b ending:Tue Nov 08 16:33:32 MST 2016
+

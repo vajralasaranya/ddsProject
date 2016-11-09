@@ -39,9 +39,9 @@ import java.util.List;
 import scala.Tuple2;
 
 //Phase 2 Code 
-import org.apache.spark.api.java.JavaSparkContext
-import org.apache.spark.api.java.JavaRDD
-import org.apache.spark.SparkConf
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.SparkConf;
 
 
 //todo: Replace older join query class.
@@ -411,27 +411,27 @@ public class JoinQuery implements Serializable{
 
 
     //PHASE 2 CODE 
-    public static JavaPairRDD<Envelope, HashSet<Point>> SpatialJoinQueryUsingCartesianProduct(PointRDD objectRDD, RectangleRDD rectangleRDD) 
+    public JavaPairRDD<Envelope, HashSet<Point>> SpatialJoinQueryUsingCartesianProduct(PointRDD objectRDD, RectangleRDD rectangleRDD) 
     {
+    	List<Envelope> queryEnvelope = rectangleRDD.getRawRectangleRDD().collect();
 
-        List<Envelope> queryEnvelope = queryWindowRDD.getRawRectangleRDD().takesample();
+        long loopRectTimes = rectangleRDD.getRawRectangleRDD().count();
 
-        SparkConf conf = new SparkConf().setAppName(appName).setMaster(master);
-        JavaSparkContext sc = new JavaSparkContext(conf);
-
-        int loopRectTimes = queryWindowRDD.getRawRectangleRDD().count();
-
-        List<RectangleRDD> rectangleList = new ArrayList<RectangleRDD>();
+        List<Tuple2<Envelope, HashSet<Point>>> resultList = new ArrayList<Tuple2<Envelope, HashSet<Point>>>();
+       
         
         for(int i =0; i < loopRectTimes; i++)
         {
-            RectangleRDD resultOne = RangeQuery.SpatialRangeQuery(objectRDD, queryEnvelope[i], 0);
-            rectangleList.add(resultOne);
+        	Envelope env = queryEnvelope.get(i);
+        	 HashSet<Point> resultOne = new HashSet<>(RangeQuery.SpatialRangeQuery(objectRDD, env, 0).rawPointRDD.collect());
+        	 Tuple2<Envelope, HashSet<Point>> tmpval = new Tuple2<> (env,resultOne);
+        	 resultList.add(tmpval);
         }
         
       //Collect all results;
 
-        JavaPairRDD<Envelope, HashSet<Point>> restuls = sc.parallelizePairs(rectangleList);    
+        JavaPairRDD<Envelope, HashSet<Point>> restuls = sc.parallelizePairs(resultList);  
+        JavaPairRDD<Envelope, HashSet<Point>> results = aggregateJoinResultPointByRectangle(restuls);  
 
       //Return the result RDD;
       return results; 
