@@ -136,9 +136,9 @@ val out=new PrintWriter("out3b.txt");
 out.println("question3b starting:"+now);
 
 for( a<- forloopmin to  forloopmax ) {
+println(a);
 val objectRDD1 = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv"); 
 objectRDD1.buildIndex("rtree");
-
 val fact=new GeometryFactory();
 val queryPoint=fact.createPoint(new Coordinate(-113.79, 35.08));
 var result=KNNQuery.SpatialKnnQueryUsingIndex(objectRDD1, queryPoint, 5);
@@ -156,9 +156,10 @@ val now = Calendar.getInstance().getTime()
 print("question4a starting:"+now)
 val out=new PrintWriter("out4a.txt");
 out.println("question4a starting:"+now);
-for( a<- forloopmin to  forloopmax ) {
-val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",11);
-val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",11); 
+for( a<- forloopmin to  9) {
+println(a);
+val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",6);
+val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",6); 
 val joinQuery = new JoinQuery(sc,objectRDD,objectRDD3);
 val resultSize = joinQuery.SpatialJoinQuery(objectRDD,objectRDD3).count();
 }
@@ -176,9 +177,10 @@ print("question4b starting:"+now)
 val out=new PrintWriter("out4b.txt");
 out.println("question4b starting:"+now);
 
-for( a<- forloopmin to  forloopmax ) {
-val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",11);
-val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",11);
+for( a<- forloopmin to  9 ) {
+println(a);
+val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv","equalgrid",6);
+val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","equalgrid",6);
 objectRDD.buildIndex("rtree");
 val joinQuery = new JoinQuery(sc,objectRDD,objectRDD3);
 val resultSize = joinQuery.SpatialJoinQueryUsingIndex(objectRDD,objectRDD3).count();
@@ -197,9 +199,10 @@ print("question4c starting:"+now)
 val out=new PrintWriter("out4c.txt");
 out.println("question4c starting:"+now);
 
-for( a<- forloopmin to  forloopmax ) {
+for( a<- forloopmin to  9 ) {
+println(a);
 val objectRDD3 = new RectangleRDD(sc,"hdfs://rajesh:54310/home/dataset/zcta510.csv", 0,"csv");
-val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","rtree",11);
+val objectRDD = new PointRDD(sc, "hdfs://rajesh:54310/home/dataset/arealm.csv", 0, "csv","rtree",6);
 val joinQuery = new JoinQuery(sc,objectRDD,objectRDD3);
 val resultSize = joinQuery.SpatialJoinQuery(objectRDD,objectRDD3).count();
 }
@@ -209,4 +212,3 @@ print("question4c ending:"+now)
 out.println("question4c ending:"+now+"\n")
 out.flush();
 out.close();
-
