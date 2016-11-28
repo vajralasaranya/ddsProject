@@ -11,20 +11,29 @@ public class Phase3 implements Serializable{
     	return standDev;
     }
 
-    public static float getis_OrdValue()
+    public static float getis_OrdValue(float mean_val, float std_dev, int total_cells, float spatial_weight, float spatial_weight_sqrd, float x_val)
     {
-
+    	float g_val = (spatial_weight * x_val - mean_val * spatial_weight);
+    	//bottom half eq calc 
+    	float under_sqrt_eq = (total_cells * (spatial_weight_sqrd) - Math.pow(spatial_weight,2) )/(total_cells - 1);
+    	float tmp_bottom_eq = std_dev * Math.sqrt(under_sqrt_eq);
+    	//now combine top and bottom to get g value 
+    	g_val = g_val / tmp_bottom_eq;
+    	return g_val;
     }
 
 
     //this function will be used on one day of data - need to add the data to this function delceration 
-    public static void groupCellData(PointRDD objectRDD)
+    public static float[][] groupCellData(PointRDD objectRDD)
     {
+    	float[][] nyc_map_day = new float[40][55];
+    	int cell_y = 0;
+    	int cell_x = 0;
     	//constants for cell boundires 
     	float latitude_min = 40.5;
     	float latitude_max = 40.9;
-    	float longitude_min = 73.7;
-    	float longitude_max = 74.25;
+    	float longitude_max = -73.7;
+    	float longitude_min = -74.25;
     	float cell_length = .01;
 
     	float lat_boundry = 0.0;
@@ -56,11 +65,18 @@ public class Phase3 implements Serializable{
     			//square and sum the value for this cell - used for standard dev 
     			x_squared_sum += Math.pow(points_in_cell,2);
 
+    			//need to store the g -value in the nyc_map_day array ??????????
+
+    			// spatial weight calc ??????????
+
     			total_cells++;
+    			cell_y++;
 
     		} // end of inner for loop
 
     		total_cells++;
+    		cell_x ++;
+    		cell_y = 0;
     	}//end of for loop
 
     	//calcualte the mean value for all the cells 
@@ -68,6 +84,8 @@ public class Phase3 implements Serializable{
 
     	//calc standard dev 
     	standard_Dev_value = standardDev(mean_Value,total_cells,x_squared_sum);
+
+    	return nyc_map_day;
 
     }
 
